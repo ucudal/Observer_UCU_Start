@@ -8,7 +8,7 @@ namespace Ucu.Poo.Observer.Tests;
 /// Para hacer pruebas con un <see cref="TemperatureSensor"/> necesitamos un objeto <see cref="IObserver"/> por
 /// eso hacemos que la propia clase de prueba implemente esa interfaz.
 /// </summary>
-public class TemperatureSensorTests : IObserver
+public class TemperatureSensorTests : IObserver<Temperature>
 {
     private TemperatureSensor sensor;
     private IList<Temperature> readings = new List<Temperature>();

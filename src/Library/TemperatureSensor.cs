@@ -1,32 +1,34 @@
 ﻿namespace Ucu.Poo.Observer;
 
-public class TemperatureSensor : ISubject
+public class TemperatureSensor : ISubject<Temperature>
 {
     // An array of sample data to mimic a temperature device.
     public Nullable<Decimal>[] SampleData = { 14.6m, 14.65m, 14.7m, 14.9m, 14.9m, 15.2m, 15.25m, 15.2m, 15.4m, 15.45m };
 
     public const int Delay = 1000;
 
-    private List<IObserver> observers = new List<IObserver>();
+    private List<IObserver<Temperature>> observers = new List<IObserver<Temperature>>();
 
     public Temperature Current { get; private set; }
+    
 
-    public void Subscribe(IObserver observer)
+    public void Subscribe(IObserver<Temperature> observer)
     {
-        if (! observers.Contains(observer))
-        {
-            observers.Add(observer);
-        }
+        observers.Add(observer);
     }
 
-    public void Unsubscribe(IObserver observer)
+    public void Unsubscribe(IObserver<Temperature> observer)
     {
-        if (observers.Contains(observer))
-        {
-            this.observers.Remove(observer);
-        }
+        observers.Remove(observer);
     }
 
+    public void Notify(Temperature t)
+    {
+        foreach (var observer in observers)
+        {
+            observer.Update(t);
+        } 
+    }
     public void StartMeasuring()
     {
         // Store the previous temperature, so notification is only sent after at least .1 change.
